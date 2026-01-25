@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:go_router/go_router.dart';
+import '../../../providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
@@ -37,7 +40,7 @@ class LoginScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                '收件箱訂閱信件管家',
+                'Subscription Mail Housekeeper',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: Theme.of(context).colorScheme.outline,
                 ),
@@ -78,7 +81,52 @@ class LoginScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _signInWithGoogle(BuildContext context, WidgetRef ref) async {}
+  Future<void> _signInWithGoogle(BuildContext context, WidgetRef ref) async {
+    final googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/gmail.readonly',
+        'https://www.googleapis.com/auth/gmail.modify',
+      ],
+    );
+
+    try {
+      final account = await googleSignIn.signIn();
+      if (account == null) {
+        // User cancelled the sign-in
+        return;
+      }
+
+      final auth = await account.authentication;
+      final accessToken = auth.accessToken;
+
+      if (accessToken == null) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to get access token')),
+          );
+        }
+        return;
+      }
+
+      // Store auth info via provider
+      await ref.read(authStateProvider.notifier).signIn(
+        email: account.email,
+        accessToken: accessToken,
+      );
+
+      // Navigate to home
+      if (context.mounted) {
+        context.go('/');
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sign in failed: $e')),
+        );
+      }
+    }
+  }
 }
 
 class _FeatureItem extends StatelessWidget {
