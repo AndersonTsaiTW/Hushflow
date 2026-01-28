@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../providers/motion_detection_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -73,8 +74,19 @@ class SettingsScreen extends ConsumerWidget {
           secondary: const Icon(Icons.speed),
           title: const Text('Motion Detection'),
           subtitle: const Text('Suggest audio when traveling'),
-          value: true,
-          onChanged: (_) {},
+          value: ref.watch(motionDetectionEnabledProvider),
+          onChanged: (value) {
+            ref.read(motionDetectionEnabledProvider.notifier).toggle(value);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(value 
+                  ? 'Motion detection enabled' 
+                  : 'Motion detection disabled'
+                ),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          },
         ),
         const Divider(),
         const _SectionHeader(title: 'About'),

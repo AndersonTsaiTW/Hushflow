@@ -72,7 +72,7 @@ class _OnboardingWhitelistScreenState
       final onboarding = ref.read(onboardingEndpointProvider);
       final results = await onboarding.scanForSubscriptions(
         accessToken,
-        maxEmails: 200,
+        maxEmails: 50,  // Scan 50 emails for faster performance
       );
 
       _candidates = results

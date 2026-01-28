@@ -9,7 +9,7 @@ final apiClientProvider = Provider<Client>((ref) {
   
   return Client(
     serverUrl,
-    connectionTimeout: const Duration(seconds: 60), // Longer timeout for Gmail ops
+    connectionTimeout: const Duration(seconds: 180), // 3 minutes for scanning 200 emails
   );
 });
 

@@ -50,7 +50,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
       final results = await mlEndpoint.analyzeInbox(
         accessToken,
         userId,
-        maxEmails: 50,
+        maxEmails: 50,  // Scan 50 emails for faster performance
       );
       
       if (mounted) {

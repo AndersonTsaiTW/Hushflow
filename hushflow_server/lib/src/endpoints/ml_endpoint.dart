@@ -92,7 +92,7 @@ class MlEndpoint extends Endpoint {
     Session session,
     String accessToken,
     int userId, {
-    int maxEmails = 50,
+    int maxEmails = 50,  // Scan 50 emails for faster performance
   }) async {
     session.log('Analyzing inbox for user $userId');
     
