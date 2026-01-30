@@ -1,11 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/foundation.dart'; // for kReleaseMode
 import 'package:hushflow_client/inbox_butler_client.dart';
 
 /// Serverpod API client provider
 /// Provides access to all server endpoints
 final apiClientProvider = Provider<Client>((ref) {
   // TODO: Make this configurable via environment
-  const serverUrl = 'http://localhost:8080/';
+  // TODO: Replace with your actual Railway API URL
+  const productionUrl = 'https://hushflow-server-production.up.railway.app/'; 
+  const developmentUrl = 'http://localhost:8080/';
+
+  // Automatically switch logic (or just hardcode it temporarily for testing)
+  // const serverUrl = kReleaseMode ? productionUrl : developmentUrl;
+  
+  // For testing Railway from local computer:
+  const serverUrl = productionUrl; // Change back to developmentUrl for local testing
   
   return Client(
     serverUrl,
