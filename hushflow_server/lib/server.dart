@@ -18,11 +18,6 @@ void run(List<String> args) async {
     Endpoints(),
   );
 
-  // Configure CORS for web server
-  pod.webServer.server.defaultResponseHeaders.add('Access-Control-Allow-Origin', '*');
-  pod.webServer.server.defaultResponseHeaders.add('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Serverpod-User-Id, X-Serverpod-Session-Id, X-Serverpod-Auth-Token');
-  pod.webServer.server.defaultResponseHeaders.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-
   // If you are using any future calls, they need to be registered here.
   // pod.registerFutureCall(ExampleFutureCall(), 'exampleFutureCall');
 
